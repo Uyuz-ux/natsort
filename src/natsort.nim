@@ -43,8 +43,17 @@ type
     ##   compare equal as numbers. When false, digit runs that are
     ##   numerically equal are ordered by their leading zeros, so
     ##   `img1` sorts before `img01`.
-    ignoreCase*: bool = true
-    ignoreLeadingZeros*: bool = true
+    ignoreCase*: bool
+    ignoreLeadingZeros*: bool
+
+proc defaultNaturalOptions*(): NaturalOptions =
+  ## The default settings: case-insensitive, leading zeros ignored.
+  ## Change single knobs like:
+  ## ```nim
+  ## var opts = defaultNaturalOptions()
+  ## opts.ignoreCase = false
+  ## ```
+  NaturalOptions(ignoreCase: true, ignoreLeadingZeros: true)
 
 proc fold(c: char, ignoreCase: bool): char =
   if ignoreCase:
@@ -150,19 +159,19 @@ proc naturalCmp*(a, b: string): int =
   ##
   ## For custom behavior (case sensitivity, leading zeros) see
   ## `naturalCompare` and `NaturalOptions`.
-  naturalCompareImpl(a, b, NaturalOptions())
+  naturalCompareImpl(a, b, defaultNaturalOptions())
 
 proc naturalCompare*(a, b: string, options: NaturalOptions): int {.inline.} =
   ## `naturalCmp` with custom `NaturalOptions`.
   naturalCompareImpl(a, b, options)
 
-proc naturalLess*(a, b: string, options = NaturalOptions()): bool {.inline.} =
+proc naturalLess*(a, b: string, options = defaultNaturalOptions()): bool {.inline.} =
   ## Convenience predicate: the pair sorts in natural order
   ## (`naturalCompare(a, b, options) < 0`).
   naturalCompareImpl(a, b, options) < 0
 
 proc naturalSorted*(items: openArray[string],
-    options = NaturalOptions()): seq[string] =
+    options = defaultNaturalOptions()): seq[string] =
   ## Return a new sequence with `items` sorted in natural order.
   ##
   ## ```nim
@@ -175,7 +184,7 @@ proc naturalSorted*(items: openArray[string],
     naturalCompareImpl(x, y, options)
 
 proc isNaturalSorted*(items: openArray[string],
-    options = NaturalOptions()): bool =
+    options = defaultNaturalOptions()): bool =
   ## Check whether `items` is already in natural order (useful in tests
   ## and assertions).
   for k in 1 ..< items.len:

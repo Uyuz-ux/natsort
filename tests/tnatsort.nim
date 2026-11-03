@@ -40,7 +40,7 @@ suite "case and zeros options":
     check naturalCmp("Apple", "apple") == 0
 
   test "case-sensitive comparison is available":
-    let opts = NaturalOptions(ignoreCase: false)
+    let opts = NaturalOptions(ignoreCase: false, ignoreLeadingZeros: true)
     check naturalCompare("Apple", "apple", opts) < 0  # 'A' (0x41) < 'a' (0x61)
     check naturalCompare("apple", "Banana", opts) > 0
 
@@ -50,7 +50,7 @@ suite "case and zeros options":
     check naturalCmp("000", "0") == 0
 
   test "leading zeros can break ties deterministically":
-    let opts = NaturalOptions(ignoreLeadingZeros: false)
+    let opts = NaturalOptions(ignoreCase: true, ignoreLeadingZeros: false)
     check naturalCompare("img1", "img01", opts) < 0
     check naturalCompare("img01", "img1", opts) > 0
 

@@ -32,7 +32,8 @@ echo naturalSorted(@["file10.txt", "file2.txt", "file1.txt"])
   folding and leading-zero handling on or off:
 
   ```nim
-  var opts = NaturalOptions(ignoreCase: false)
+  var opts = defaultNaturalOptions()
+  opts.ignoreCase = false
   echo naturalCompare("Apple", "apple", opts)  # < 0, 'A' before 'a'
   ```
 
@@ -56,6 +57,11 @@ echo naturalSorted(@["file10.txt", "file2.txt", "file1.txt"])
    by default (`ignoreCase: false` disables it). Non-ASCII (UTF-8)
    characters keep their codepoint order; locale-specific collation is
    out of scope.
+
+> **Note:** object fields have no default values (Nim 1.6
+> compatibility), so construct options with `defaultNaturalOptions()`
+> and change single fields instead of using partial object
+> constructors.
 
 ## Installation
 
