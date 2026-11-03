@@ -1,0 +1,4 @@
+tests/tnatsort
+examples/sort_files
+*.exe
+nimcache/
