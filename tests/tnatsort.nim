@@ -81,3 +81,28 @@ suite "integration":
     # when both sides are digits at the same position.
     check naturalCmp("2fast", "fast") < 0  # '2' < 'f'
     check naturalCmp("v2", "v2a") < 0
+
+suite "in-place naturalSort":
+  test "naturalSort sorts in place":
+    var files = @["file10.txt", "file2.txt", "file1.txt"]
+    files.naturalSort()
+    check files == @["file1.txt", "file2.txt", "file10.txt"]
+
+  test "naturalSort honors options":
+    var names = @["IMG1", "img01", "IMG2"]
+    var opts = defaultNaturalOptions()
+    opts.ignoreCase = false
+    names.naturalSort(opts)
+    # case-sensitive: uppercase sorts before lowercase, and with the
+    # default zero handling "img01" equals "img1" so list order holds
+    check names == @["IMG1", "IMG2", "img01"]
+    var zeros = @["img01", "img1"]
+    var zopts = defaultNaturalOptions()
+    zopts.ignoreLeadingZeros = false
+    zeros.naturalSort(zopts)
+    check zeros == @["img1", "img01"]
+
+  test "naturalSort returns the sequence for chaining":
+    var versions = @["v1.10", "v1.9", "v1.2"]
+    check versions.naturalSort() == @["v1.2", "v1.9", "v1.10"]
+    check isNaturalSorted(versions)

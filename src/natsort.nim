@@ -183,6 +183,22 @@ proc naturalSorted*(items: openArray[string],
   result.sort do (x, y: string) -> int:
     naturalCompareImpl(x, y, options)
 
+proc naturalSort*(items: var seq[string],
+    options = defaultNaturalOptions()): seq[string] {.discardable.} =
+  ## Sort `items` in place in natural order and return them, so the call
+  ## can be chained. Use this instead of `naturalSorted` when you already
+  ## own the sequence and do not need to keep the original order.
+  ##
+  ## ```nim
+  ## import natsort
+  ## var files = @["file10.txt", "file2.txt"]
+  ## files.naturalSort()
+  ## # files is now @["file2.txt", "file10.txt"]
+  ## ```
+  items.sort do (x, y: string) -> int:
+    naturalCompareImpl(x, y, options)
+  result = items
+
 proc isNaturalSorted*(items: openArray[string],
     options = defaultNaturalOptions()): bool =
   ## Check whether `items` is already in natural order (useful in tests

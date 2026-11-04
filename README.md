@@ -40,6 +40,11 @@ echo naturalSorted(@["file10.txt", "file2.txt", "file1.txt"])
 * **Zero-config checks** — `naturalLess(a, b)` for quick predicates and
   `isNaturalSorted(items)` for assertions.
 
+* **In-place or fresh** — `naturalSorted(items)` returns a new sorted
+  sequence; when you already own the sequence,
+  `items.naturalSort()` sorts it in place (and returns it for
+  chaining).
+
 | Input | Lexicographic sort | natsort |
 |---|---|---|
 | `file1, file10, file2` | `file1, file10, file2` | `file1, file2, file10` |
@@ -66,11 +71,11 @@ echo naturalSorted(@["file10.txt", "file2.txt", "file1.txt"])
 ## Installation
 
 ```
-nimble install natsort
+nimble install https://github.com/Uyuz-ux/natsort
 ```
 
-*(listed in the Nimble package index; you can also add it as a
-dependency directly from the repository)*
+*(a listing PR for the official Nimble package index is in progress;
+until it lands, install directly from the repository as above)*
 
 ## Running the tests
 
